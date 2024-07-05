@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.IO;
-using System.Linq;
 using MemoryAPI;
 using MemoryAPI.Navigation;
 
@@ -21,10 +19,10 @@ public class NavMesh
 
 	public struct NavMeshSetHeader
 	{
-		public int magic;
-		public int version;
-		public int numTiles;
-		public Detour.dtNavMeshParams meshParams;
+		public int Magic;
+		public int Version;
+		public int NumTiles;
+		public Detour.dtNavMeshParams MeshParams;
 
 		public static int ByteSize()
 		{
@@ -48,19 +46,19 @@ public class NavMesh
 
 		public int FromBytes(byte[] array, int start)
 		{
-			magic = BitConverter.ToInt32(array, start); start += sizeof(int);
-			version = BitConverter.ToInt32(array, start); start += sizeof(int);
-			numTiles = BitConverter.ToInt32(array, start); start += sizeof(int);
-			meshParams = new Detour.dtNavMeshParams();
-			meshParams.FromBytes(array, start); start += Detour.dtNavMeshParams.ByteSize();
+			Magic = BitConverter.ToInt32(array, start); start += sizeof(int);
+			Version = BitConverter.ToInt32(array, start); start += sizeof(int);
+			NumTiles = BitConverter.ToInt32(array, start); start += sizeof(int);
+			MeshParams = new Detour.dtNavMeshParams();
+			MeshParams.FromBytes(array, start); start += Detour.dtNavMeshParams.ByteSize();
 
 			return start;
 		}
 	}
 	public struct NavMeshTileHeader
 	{
-		public uint tileRef;
-		public int dataSize;
+		public uint TileRef;
+		public int DataSize;
 
 		public static int ByteSize()
 		{
@@ -74,8 +72,8 @@ public class NavMesh
 
 		public int FromBytes(byte[] array, int start)
 		{
-			tileRef = BitConverter.ToUInt32(array, start); start += sizeof(uint);
-			dataSize = BitConverter.ToInt32(array, start); start += sizeof(int);
+			TileRef = BitConverter.ToUInt32(array, start); start += sizeof(uint);
+			DataSize = BitConverter.ToInt32(array, start); start += sizeof(int);
 
 			return start;
 		}
@@ -90,16 +88,14 @@ public class NavMesh
 			return false;
 		}
 
-		string path = string.Format(@"NavigationMeshes\{0}.nav", zone.ToString());
+		var path = $@"NavigationMeshes\{zone.ToString()}.nav";
 
 		if (_zone == zone && dtNavMesh != null)
 		{
 			return true;
 		}
-		else
-		{
-			Unload();
-		}
+
+        Unload();
 
 		var headerBufferSize = NavMeshSetHeader.ByteSize();
 		var headerBuffer = new byte[headerBufferSize];
@@ -116,35 +112,35 @@ public class NavMesh
 		NavMeshSetHeader header = new NavMeshSetHeader();
 		var headerBytesRead = header.FromBytes(headerBuffer, 0);
 
-		if (header.magic != NAVMESHSET_MAGIC)
+		if (header.Magic != NAVMESHSET_MAGIC)
 		{
 			return false;
 		}
 
-		if (header.version != NAVMESHSET_VERSION)
+		if (header.Version != NAVMESHSET_VERSION)
 		{
 			return false;
 		}
 
 		var navMesh = new Detour.dtNavMesh();
-		navMesh.init(header.meshParams);
+		navMesh.init(header.MeshParams);
 
-		for (int i = 0; i < header.numTiles; ++i)
+		for (int i = 0; i < header.NumTiles; ++i)
 		{
 			var tileHeaderBuffer = new byte[NavMeshTileHeader.ByteSize()];
 			file.Read(tileHeaderBuffer, 0, tileHeaderBuffer.Length);
 			var tileHeader = new NavMeshTileHeader();
 			tileHeader.FromBytes(tileHeaderBuffer, 0);
-			if (tileHeader.dataSize == 0 || tileHeader.tileRef == 0)
+			if (tileHeader.DataSize == 0 || tileHeader.TileRef == 0)
 			{
 				break;
 			}
 			var rawTileData = new Detour.dtRawTileData();
-			var data = new byte[tileHeader.dataSize];
+			var data = new byte[tileHeader.DataSize];
 			file.Read(data, 0, data.Length);
 			rawTileData.FromBytes(data, 0);
 			uint result = 0;
-			navMesh.addTile(rawTileData, tileHeader.dataSize, 0x01 /*DT_TILE_FREE_DATA*/, tileHeader.tileRef, ref result);
+			navMesh.addTile(rawTileData, tileHeader.DataSize, 0x01 /*DT_TILE_FREE_DATA*/, tileHeader.TileRef, ref result);
 			if (Detour.dtStatusFailed(result))
 			{
 				return false;
@@ -152,7 +148,7 @@ public class NavMesh
 		}
 
 		// hard-code to make sure it is compatible with expectation.
-		var maxPolys = header.meshParams.maxPolys;
+		var maxPolys = header.MeshParams.maxPolys;
 
 		var status = new Detour.dtNavMeshQuery().init(navMesh, maxPolys);
 
@@ -162,6 +158,7 @@ public class NavMesh
 		}
 
 		dtNavMesh = navMesh;
+		_zone = zone;
 
 		return headerBytesRead > 0;
 	}
@@ -173,13 +170,14 @@ public class NavMesh
 
 	private static Position ToFFXIPosition(float[] detourPosition)
 	{
-		var ffxiPosition = new Position();
-		
-		ffxiPosition.X = detourPosition[0];
-		ffxiPosition.Y = -detourPosition[1];
-		ffxiPosition.Z = -detourPosition[2];
+		var ffxiPosition = new Position
+        {
+            X = detourPosition[0],
+            Y = -detourPosition[1],
+            Z = -detourPosition[2]
+        };
 
-		return ffxiPosition;
+        return ffxiPosition;
 
 	}
 
@@ -213,9 +211,9 @@ public class NavMesh
 		float[] startNearest = new float[3];
 		float[] endNearest = new float[3];
 
-		float[] extents = new float[] { 10.0F, (float)EasyFarm.UserSettings.Config.Instance.HeightThreshold, 10.0F };
+        float[] extents = new float[] { 5.0f, 10.0f, 5.0f };
 
-		status = navMeshQuery.findNearestPoly(startDetourPosition, extents, queryFilter, ref startRef, ref startNearest);
+        status = navMeshQuery.findNearestPoly(startDetourPosition, extents, queryFilter, ref startRef, ref startNearest);
 		if (Detour.dtStatusFailed(status))
 		{
 			return path;

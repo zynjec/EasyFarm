@@ -80,22 +80,18 @@ namespace EasyFarm.States
             {
                 var closestNodes = _nodes.OrderBy(x => Distance(playerPosition, x));
                 var closest = closestNodes.FirstOrDefault();
+                int closestIndex = _nodes.IndexOf(closest);
                 var first = _nodes.FirstOrDefault();
                 var last = _nodes.LastOrDefault();
-                if (Distance(closest, first) > Distance(closest, last))
+                if ((closestIndex - _nodes.Count) < (_nodes.Count / 2))
                 {
                     Waypoints = new ObservableCollection<Position>(Waypoints.Reverse());
                     _nodes.Reverse();
                 }
 
-                _goal = _nodes.IndexOf(closest);
+                _goal = closestIndex;
                 EasyFarm.ViewModels.LogViewModel.Write("Navigating to waypoint (" + _goal + ") " + closest.ToString());
 
-                return _nodes[_goal];
-            }
-            else if (_nodes.Count < 2)
-            {
-                _goal = 0;
                 return _nodes[_goal];
             }
             else if (_nodes.Count < 3)
@@ -123,7 +119,7 @@ namespace EasyFarm.States
                 var node = _nodes[_goal];
                 EasyFarm.ViewModels.LogViewModel.Write("Navigating to waypoint (" + _goal + ") " + node.ToString());
 
-                return _nodes[_goal];
+                return node;
             }
         }
 
@@ -156,7 +152,7 @@ namespace EasyFarm.States
                 Position nextPos = GetNextPosition(context.API.Player.Position);
                 if (nextPos != null)
                 {
-                    return (Distance(context.API.Player.Position, nextPos) < 0.5
+                    return (Distance(context.API.Player.Position, nextPos) < context.API.Navigator.DistanceTolerance
                            || context.NavMesh.FindPathBetween(context.API.Player.Position, GetNextPosition(context.API.Player.Position)).Count > 0
                            );
                 }

@@ -50,14 +50,17 @@ namespace EasyFarm.States
             // Approach when there are no pulling moves available. 
             if (!usable.Any()) return true;
 
-            // Approach mobs if their distance is close. 
-            return context.Target.Distance < 8;
+            // Approach mobs if their distance is far. 
+            return context.Target.Distance > context.Config.MeleeDistance;
         }
 
         public override void Run(IGameContext context)
         {
             // Target mob if not currently targeted. 
             Player.SetTarget(context.API, context.Target);
+
+            // calculate the new path
+
 
             // Has the user decided that we should approach targets?
             if (context.Config.IsApproachEnabled)
@@ -88,6 +91,7 @@ namespace EasyFarm.States
                         float deltaY = node.Y - context.API.Player.Position.Y;
                         float deltaZ = node.Z - context.API.Player.Position.Z;
                         context.API.Follow.SetFollowCoords(deltaX, deltaY, deltaZ);
+                        context.API.Navigator.FaceHeading(node);
                     }
                     else
                     {

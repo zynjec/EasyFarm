@@ -46,14 +46,11 @@ namespace EasyFarm.Context
         private Zone _zone;
         public Zone Zone
         {
-            get
-            {
-                return _zone;
-            }
+            get => _zone;
             set
             {
-                NavMesh.LoadZone(_zone);
                 _zone = value;
+                NavMesh.LoadZone(_zone);
             }
         }
         public NavMesh NavMesh { get; set; }

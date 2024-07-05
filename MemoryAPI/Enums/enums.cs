@@ -704,7 +704,7 @@ namespace MemoryAPI
         RuAun_Gardens = 130,
         Mordion_Gaol = 131,
         Abyssea_La_Theine = 132,
-        Lobby = 133,
+        Outer_RaKaznar_U2 = 133,
         Dynamis_Beaucedine = 134,
         Dynamis_Xarcabard = 135,
         Beaucedine_Glacier_S = 136,
@@ -760,6 +760,7 @@ namespace MemoryAPI
         Dynamis_Bastok = 186,
         Dynamis_Windurst = 187,
         Dynamis_Jeuno = 188,
+        Outer_RaKaznar_U3 = 189,
         King_Ranperres_Tomb = 190,
         Dangruf_Wadi = 191,
         Horutoto_Inner_Ruins = 192,
@@ -795,6 +796,7 @@ namespace MemoryAPI
         Airship_from_Kazham_to_Jeuno = 226,
         Ferry_between_Mhaura__Selbina_Pirates = 227,
         Ferry_between_Selbina__Mhaura_Pirates = 228,
+        Throne_Room_V = 229,
         Southern_San_dOria = 230,
         Northern_San_dOria = 231,
         Port_San_dOria = 232,
@@ -842,12 +844,26 @@ namespace MemoryAPI
         Outer_RaKaznar = 274,
         Outer_RaKaznar_U = 275,
         RaKaznar_Inner_Court = 276,
+        RaKaznar_Turris = 277,
+        Walk_of_Echoes_P2 = 279,
         Mog_Garden = 280,
+        Leafallia = 281,
+        Mount_Kamihr = 282,
         Silver_Knife = 283,
         Celennia_Wexworth_Memorial_Library = 284,
         Feretory = 285,
-
-
+        Maquette_Abdhaljs_LegionB = 287,
+        Escha_ZiTah = 288,
+        Escha_RuAun = 289,
+        Desuetia_Empyreal_Paradox = 290,
+        Reisenjima = 291,
+        Reisenjima_Henge = 292,
+        Reisenjima_Sanctorium = 293,
+        Dynamis_San_dOria_D = 294,
+        Dynamis_Bastok_D = 295,
+        Dynamis_Windurst_D = 296,
+        Dynamis_Jeuno_D = 297,
+        Walk_of_Echoes_P1 = 298
     } // @ public enum Zone : short 
 
     /// <summary>
