@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.31321.278
+# Visual Studio Version 17
+VisualStudioVersion = 17.10.35013.160
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EasyFarm", "EasyFarm\EasyFarm.csproj", "{14508978-627B-46AE-9779-1F6B4FB0611E}"
 EndProject
@@ -26,7 +26,6 @@ Global
 		{43285FC5-222E-4828-B8F2-396FF628553D}.Debug|Any CPU.ActiveCfg = Debug|x86
 		{43285FC5-222E-4828-B8F2-396FF628553D}.Debug|Any CPU.Build.0 = Debug|x86
 		{43285FC5-222E-4828-B8F2-396FF628553D}.Release|Any CPU.ActiveCfg = Release|x86
-		{43285FC5-222E-4828-B8F2-396FF628553D}.Release|Any CPU.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
