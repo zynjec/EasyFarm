@@ -8,7 +8,7 @@
              d:DesignHeight="300" d:DesignWidth="300">
     <ScrollViewer VerticalScrollBarVisibility="Auto">
         <StackPanel>
-            <GroupBox Header="Notorius Monsters">
+            <GroupBox Header="Notorious Monsters">
                 <local:NotoriousMonsterView />
             </GroupBox>
             <GroupBox Header="Mobs to Kill">
