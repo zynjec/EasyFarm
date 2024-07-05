@@ -1,0 +1,94 @@
+﻿<controls:MetroWindow  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                       xmlns:controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+                       xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+                       xmlns:Dialog="clr-namespace:MahApps.Metro.Controls.Dialogs;assembly=MahApps.Metro"
+                       Dialog:DialogParticipation.Register="{Binding}"
+                       mc:Ignorable="d"
+                       x:Name="MainForm"
+                       x:Class="EasyFarm.Views.MasterView"
+                       Title="{Binding MainWindowTitle}"
+                       Width="650"
+                       Height="400"
+                       Topmost="{Binding IsChecked, ElementName=MnuAlwaysOnTop, Mode=TwoWay, UpdateSourceTrigger=LostFocus}">
+    <controls:MetroWindow.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Views/ViewDictionary.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </controls:MetroWindow.Resources>
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Loaded">
+            <i:InvokeCommandAction Command="{Binding LoadedCommand}" />
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="30" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="100" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <Grid.Resources>
+            <Style TargetType="Menu">
+                <Setter Property="Background"
+                        Value="Black" />
+                <Setter Property="Foreground"
+                        Value="White" />
+            </Style>
+            <Style TargetType="{x:Type MenuItem}">
+                <Setter Property="Foreground"
+                        Value="White" />
+                <Setter Property="Foreground"
+                        Value="Black" />
+            </Style>
+        </Grid.Resources>
+        <Frame Grid.ColumnSpan="2"
+               Background="Black" />
+        <Menu Grid.Row="0" Grid.ColumnSpan="2" Grid.Column="0"
+              VerticalAlignment="Center">
+            <Button
+                Margin="0,5"
+                Content="{Binding StartPauseHeader}"
+                Command="{Binding StartCommand}" VerticalAlignment="Center" HorizontalAlignment="Center" />
+            <Button
+                Margin="0,5"
+                Content="Select Character"
+                Command="{Binding SelectProcessCommand}" HorizontalAlignment="Center" VerticalAlignment="Center" Background="#FFF7F7F7" />
+            <Separator Margin="0"/>
+            <Button
+                Margin="0,5"
+                Content="Load Settings"
+                Command="{Binding LoadCommand}" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="9" Background="#FFF7F7F7" />
+            <Button
+                Margin="0,5"
+                Content="Save Settings"
+                Command="{Binding SaveCommand}" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="9" Background="#FFF7F7F7" />
+            <Separator Margin="0"/>
+            <CheckBox x:Name="MnuAlwaysOnTop" Content="Always on top" VerticalAlignment="Center" Padding="3,0,0,0" HorizontalContentAlignment="Center" Foreground="White" />
+            <CheckBox Content="Minimize to tray" VerticalAlignment="Center" Padding="3,0,0,0" HorizontalContentAlignment="Center" Foreground="White" IsChecked="{Binding MinimizeToTray}" />
+        </Menu>
+
+        <ContentControl Content="{Binding ViewModel}"
+                        Grid.Row="1"
+                        Grid.ColumnSpan="2" 
+                        Grid.Column="0" />
+
+        <StatusBar Grid.Row="2"
+                   Grid.Column="0"
+                   Grid.ColumnSpan="2"
+                   Background="Black"
+                   HorizontalContentAlignment="Center">
+            <Label Foreground="White"
+                   Margin="0"
+                   Height="30"
+                   Content="{Binding StatusBarText, NotifyOnSourceUpdated=True}" />
+        </StatusBar>
+    </Grid>
+</controls:MetroWindow>
